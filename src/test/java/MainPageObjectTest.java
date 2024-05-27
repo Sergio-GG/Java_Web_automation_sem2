@@ -1,3 +1,5 @@
+import com.codeborne.selenide.*;
+import org.example.elements.TableRowsClass;
 import org.example.pages.CreateStudentWindowObject;
 import org.example.pages.MainPageObject;
 import org.example.pages.StudentsTablePageObject;
@@ -12,62 +14,65 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import java.time.Duration;
 import java.util.List;
 
+import static com.codeborne.selenide.Selenide.$$x;
+
 public class MainPageObjectTest {
 
     private WebDriver driver;
     @Test
     void signInFailure(){
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("start-maximized");
-        chromeOptions.addArguments("incognito");
-        driver = new ChromeDriver(chromeOptions);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("https://test-stand.gb.ru/login");
+        Selenide.open("https://test-stand.gb.ru/login");
+        driver = WebDriverRunner.getWebDriver();
 
-        MainPageObject mainPageObject = new MainPageObject(driver);
+
+        MainPageObject mainPageObject = Selenide.page(MainPageObject.class);
         mainPageObject.sighIn("", "");
 
         Assertions.assertEquals("Invalid credentials.", mainPageObject.getErrorList().get(0).getText());
 
-        driver.quit();
+        WebDriverRunner.closeWebDriver();
     }
     @Test
     void changeStudentsCount() throws InterruptedException {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("start-maximized");
-        chromeOptions.addArguments("incognito");
-        driver = new ChromeDriver(chromeOptions);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("https://test-stand.gb.ru/login");
+        Selenide.open("https://test-stand.gb.ru/login");
+        driver = WebDriverRunner.getWebDriver();
 
         // Authorization
-        MainPageObject mainPageObject = new MainPageObject(driver);
+        MainPageObject mainPageObject = Selenide.page(MainPageObject.class);
         mainPageObject.sighIn("GB2023085e78711", "5632f36449");
 
         // Authorization assert
-        List<WebElement> webElementList = driver.findElements(By.xpath("//th[@data-column-id='SMUI-data-table-column-3']"));
-        Assertions.assertEquals(1, webElementList.size());
+        ElementsCollection webElementList = $$x("//th[@data-column-id='SMUI-data-table-column-3']");
+        webElementList.should(CollectionCondition.sizeGreaterThan(0));
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-        StudentsTablePageObject sto = new StudentsTablePageObject(driver);
-        List<WebElement> list = driver.findElements(By.xpath("//table[@aria-label='Dummies list']/tbody/tr"));
-        Assertions.assertEquals(6, list.size());
+        // Create StudentPage
+        StudentsTablePageObject sto = Selenide.page(StudentsTablePageObject.class);
+        ElementsCollection tableRows = $$x("//table[@aria-label='Dummies list']/tbody/tr");
+        tableRows.should(CollectionCondition.sizeGreaterThanOrEqual(6));
 
+        // assert cast to TableRowClass type
         int elementsCount = sto.getGroupOfElements().size();
-
+        Assertions.assertEquals(10, elementsCount);
         sto.createStudent();
 
         // StudentTablePage assert
-        List<WebElement> addButton = driver.findElements(By.xpath("//button[@id='create-btn']"));
+        ElementsCollection addButton = $$x("//button[@id='create-btn']");
         Assertions.assertEquals(1, addButton.size());
 
-        CreateStudentWindowObject cswo = new CreateStudentWindowObject(driver);
-        cswo.createNewStudent("Student1");
+//        // Create StudentWindow
+        CreateStudentWindowObject cswo = Selenide.page(CreateStudentWindowObject.class);
+        Assertions.assertEquals(5, cswo.getFields());
+        Assertions.assertEquals("Login", cswo.getLoginName());
+        cswo.createNewStudent("Velikiy Student Lomonosov111");
 
-        //Assert add Student
-        Assertions.assertEquals(elementsCount + 1, sto.getGroupOfElements().size());
+//        // Assert student added to table
+        driver.navigate().refresh();
+        StudentsTablePageObject sto1 = Selenide.page(StudentsTablePageObject.class);
+        List<TableRowsClass> newRows = sto1.getGroupOfElements();
+        Assertions.assertEquals(elementsCount + 1, newRows.size());
 
-        driver.quit();
+        WebDriverRunner.closeWebDriver();
     }
 }

@@ -1,15 +1,16 @@
 package org.example.elements;
 
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.SelenideElement;
+import org.example.pages.StudentsTablePageObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import static com.codeborne.selenide.Selenide.$x;
+
 public class TableRowsClass {
 
-    private final WebElement root;
-
-    public TableRowsClass(WebElement root) {
-        this.root = root;
-    }
+    private final SelenideElement root = $x("//table[@aria-label='Dummies list']/tbody/tr");
 
     public String getId(){
         return root.findElement(By.xpath("./th[1]")).getText();

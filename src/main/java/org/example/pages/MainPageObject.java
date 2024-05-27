@@ -1,30 +1,18 @@
 package org.example.pages;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.FindBys;
-import org.openqa.selenium.support.PageFactory;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 
-import java.util.List;
+import static com.codeborne.selenide.Selenide.$$x;
+import static com.codeborne.selenide.Selenide.$x;
 
 public class MainPageObject {
 
-    @FindBy(xpath="//input[@type='text']")
-    private WebElement login;
+    private SelenideElement login = $x("//input[@type='text']");
+    private SelenideElement password = $x("//input[@type='password']");
+    private SelenideElement loginButton = $x("//button");
+    private ElementsCollection errorList = $$x("//p[@class='svelte-uwkxn9']");
 
-    @FindBy(xpath="//input[@type='password']")
-    private WebElement password;
-
-    @FindBy(xpath="//button")
-    private WebElement loginButton;
-
-    @FindBy(xpath="//p[@class='svelte-uwkxn9']")
-    private List<WebElement> errorList;
-
-    public MainPageObject(WebDriver webDriver) {
-        PageFactory.initElements(webDriver, this);
-    }
 
     public void sighIn(String inputLogin, String inputPass){
         login.sendKeys(inputLogin);
@@ -32,7 +20,7 @@ public class MainPageObject {
         loginButton.click();
     }
 
-    public List<WebElement> getErrorList(){
+    public ElementsCollection getErrorList(){
         return errorList;
     }
 }
