@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d0fb7c8d-5c77-4883-b689-f0eebeaa161d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/pages/CreateStudentWindowObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/pages/CreateStudentWindowObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/pages/StudentsTablePageObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/pages/StudentsTablePageObject.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/MainPageObjectTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MainPageObjectTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="seminar_3" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -56,7 +54,21 @@
     &quot;last_opened_file_path&quot;: &quot;D:/Coding/Java_tasks/Java_Web_automation_sem2&quot;
   }
 }</component>
-  <component name="RunManager" selected="JUnit.MainPageObjectTest.changeStudentsCount">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Coding\Java_tasks\Java_Web_automation_sem2\src\main\resources" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JUnit.MainPageObjectTest">
+    <configuration name="MainPageObjectTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Java_Web_automation_sem2" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="MainPageObjectTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MainPageObjectTest.changeStudentsCount" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Java_Web_automation_sem2" />
       <option name="PACKAGE_NAME" value="" />
@@ -79,6 +91,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.MainPageObjectTest" />
         <item itemvalue="JUnit.MainPageObjectTest.changeStudentsCount" />
         <item itemvalue="JUnit.MainPageObjectTest.signInFailure" />
         <item itemvalue="JUnit.MainPageObjectTest.changeStudentsCount" />

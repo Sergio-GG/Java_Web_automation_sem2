@@ -19,40 +19,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainPageObjectTest {
+public class MainPageObjectTest extends AsctractTest{
 
     private WebDriver driver;
     @Test
-    void signInFailure(){
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("start-maximized");
-        chromeOptions.addArguments("incognito");
-        driver = new ChromeDriver(chromeOptions);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("https://test-stand.gb.ru/login");
+    void signInFailure() throws MalformedURLException {
 
+        driver = getWebDriver();
         MainPageObject mainPageObject = new MainPageObject(driver);
         mainPageObject.sighIn("", "");
-
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         Assertions.assertEquals("Invalid credentials.", mainPageObject.getErrorList().get(0).getText());
 
         driver.quit();
     }
     @Test
     void changeStudentsCount() throws InterruptedException, MalformedURLException {
-//        ChromeOptions chromeOptions = new ChromeOptions();
-//        chromeOptions.addArguments("start-maximized");
-//        chromeOptions.addArguments("incognito");
-//        driver = new ChromeDriver(chromeOptions);
-//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-        DesiredCapabilities dc = new DesiredCapabilities();
-        dc.setBrowserName("chrome");
-        Map<String, Object> options = new HashMap<>();
-        options.put("enableVnc", true);
-        dc.setCapability("selenoid:options", options);
-        driver = new RemoteWebDriver(new URL("http://Localhost:4444/wd/hub"), dc);
-        driver.get("https://test-stand.gb.ru/login");
+        driver = getWebDriver();
 
         // Authorization
         MainPageObject mainPageObject = new MainPageObject(driver);
