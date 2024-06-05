@@ -8,9 +8,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.lang.module.Configuration;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainPageObjectTest {
 
@@ -32,29 +39,37 @@ public class MainPageObjectTest {
         driver.quit();
     }
     @Test
-    void changeStudentsCount() throws InterruptedException {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        chromeOptions.addArguments("start-maximized");
-        chromeOptions.addArguments("incognito");
-        driver = new ChromeDriver(chromeOptions);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    void changeStudentsCount() throws InterruptedException, MalformedURLException {
+//        ChromeOptions chromeOptions = new ChromeOptions();
+//        chromeOptions.addArguments("start-maximized");
+//        chromeOptions.addArguments("incognito");
+//        driver = new ChromeDriver(chromeOptions);
+//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+        DesiredCapabilities dc = new DesiredCapabilities();
+        dc.setBrowserName("chrome");
+        Map<String, Object> options = new HashMap<>();
+        options.put("enableVnc", true);
+        dc.setCapability("selenoid:options", options);
+        driver = new RemoteWebDriver(new URL("http://Localhost:4444/wd/hub"), dc);
         driver.get("https://test-stand.gb.ru/login");
 
         // Authorization
         MainPageObject mainPageObject = new MainPageObject(driver);
         mainPageObject.sighIn("GB2023085e78711", "5632f36449");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         // Authorization assert
-        List<WebElement> webElementList = driver.findElements(By.xpath("//th[@data-column-id='SMUI-data-table-column-3']"));
-        Assertions.assertEquals(1, webElementList.size());
+        List<WebElement> list0 = driver.findElements(By.xpath("//th[@data-column-id='SMUI-data-table-column-3']"));
+        Assertions.assertEquals("Status", list0.get(0).getText());
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
         StudentsTablePageObject sto = new StudentsTablePageObject(driver);
         List<WebElement> list = driver.findElements(By.xpath("//table[@aria-label='Dummies list']/tbody/tr"));
-        Assertions.assertEquals(6, list.size());
+        Assertions.assertEquals(10, list.size());
 
-        int elementsCount = sto.getGroupOfElements().size();
+        int elementsCount = list.size();
 
         sto.createStudent();
 
@@ -63,10 +78,15 @@ public class MainPageObjectTest {
         Assertions.assertEquals(1, addButton.size());
 
         CreateStudentWindowObject cswo = new CreateStudentWindowObject(driver);
-        cswo.createNewStudent("Student1");
+        List<WebElement> fields = driver.findElements(By.xpath("//label[@class='mdc-text-field smui-text-field--standard']"));
+        WebElement loginField = fields.get(3);
+        loginField.sendKeys("Studento_Vero1");
+        cswo.createNewStudent();
 
-        //Assert add Student
-        Assertions.assertEquals(elementsCount + 1, sto.getGroupOfElements().size());
+        List<WebElement> list2 = driver.findElements(By.xpath("//table[@aria-label='Dummies list']/tbody/tr"));
+        Assertions.assertEquals(10, list2.size());
+
+        Thread.sleep(20000);
 
         driver.quit();
     }

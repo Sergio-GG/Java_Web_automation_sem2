@@ -9,21 +9,21 @@ import java.util.List;
 
 public class CreateStudentWindowObject {
 
-    @FindBy(xpath="//label[@class='mdc-text-field smui-text-field--standard']")
-    List<WebElement> fields;
+//    @FindBy(xpath="//label[@class='mdc-text-field smui-text-field--standard']")
+//    private List<WebElement> fields;
 
     @FindBy(xpath="//button[@class='material-icons mdc-icon-button mdc-icon-button--display-flex mdc-dialog__close mdc-ripple-upgraded--unbounded mdc-ripple-upgraded']")
-    WebElement closeButton;
+    private WebElement closeButton;
 
     public CreateStudentWindowObject(WebDriver webDriver){
         PageFactory.initElements(webDriver, this);
     }
 
-    public WebElement loginField = fields.get(3);
-    //
+    //public WebElement loginField = fields.get(3);
 
-    public void createNewStudent(String inputLogin){
-        loginField.sendKeys(inputLogin);
+
+    public void createNewStudent(){
+        //loginField.sendKeys(inputLogin);
         closeButton.click();
     }
 }
